@@ -28,7 +28,12 @@ This open repository includes:
 ```
 DSA/
 ├── NeetCode150/                         # 📘 NeetCode 150 Swift Field Guide & Visualizer
+│   ├── NeetCode_150_Complete_Master_Guide.pdf   # 📄 Full 150-problem ReportLab PDF Master Guide
+│   ├── NeetCode_150_Part1_Problems_1_to_75.pdf  # 📄 Part 1 ReportLab PDF (Problems #1 to #75)
+│   ├── NeetCode_150_Part2_Problems_76_to_150.pdf # 📄 Part 2 ReportLab PDF (Problems #76 to #150)
 │   ├── NeetCode150-Swift-FieldGuide-Complete.docx
+│   ├── NeetCode150-Swift-FieldGuide-Complete.pdf
+│   ├── generate_all_150_pdfs.py        # 🐍 ReportLab PDF generator script (NeetCode 150)
 │   └── index.html
 │
 ├── index.html                           # 🌐 Interactive Web Visualizer Studio (7-Day DSA)
