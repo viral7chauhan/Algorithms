@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>7-Day DSA Interactive Visualizer Studio</title>
+  <link rel="stylesheet" href="index.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="brand">
+      <div class="brand-logo">🎓</div>
+      <div class="brand-title">7-Day DSA Visualizer Studio</div>
+    </div>
+    <div class="header-links">
+      <a id="pdf-link" href="file:///Users/viralchauhan/Developer/Antigravity/DSA/WarnerBrosDiscovery_7Day_DSA_Preparation_Guide.pdf" class="btn" target="_blank">
+        📄 Open PDF Manual
+      </a>
+      <a id="playground-link" href="file:///Users/viralchauhan/Developer/Antigravity/DSA/WBD_7Day_DSAPrep.playground" class="btn btn-primary" target="_blank">
+        📱 Open Swift Playground
+      </a>
+    </div>
+  </header>
+
+  <!-- App Layout -->
+  <div class="app-container">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <input type="text" id="search-input" class="search-box" placeholder="Search 40 problems...">
+        <div class="day-filters">
+          <button class="day-filter-btn active" onclick="renderProblemList('All')">All</button>
+          <button class="day-filter-btn" onclick="renderProblemList('Day 1')">Day 1</button>
+          <button class="day-filter-btn" onclick="renderProblemList('Day 2')">Day 2</button>
+          <button class="day-filter-btn" onclick="renderProblemList('Day 3')">Day 3</button>
+          <button class="day-filter-btn" onclick="renderProblemList('Day 4')">Day 4</button>
+          <button class="day-filter-btn" onclick="renderProblemList('Day 5')">Day 5</button>
+          <button class="day-filter-btn" onclick="renderProblemList('Day 6')">Day 6</button>
+        </div>
+      </div>
+      <div class="problem-list" id="problem-list">
+        <!-- Dynamically rendered problem list -->
+      </div>
+    </aside>
+
+    <!-- Main Stage -->
+    <main class="main-stage">
+
+      <!-- Problem Header Card -->
+      <section class="problem-header-card">
+        <div>
+          <h1 class="problem-info-title" id="problem-title">1. Two Sum</h1>
+          <div class="problem-meta-tags">
+            <span id="problem-category">Day 1 • Arrays & Hashing</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Visualizer Studio -->
+      <section class="visualizer-card">
+        <div class="visualizer-toolbar">
+          <div class="player-controls">
+            <button class="ctrl-btn" id="btn-back" title="Step Back">⏮️</button>
+            <button class="ctrl-btn" id="btn-play" title="Play / Pause">▶️</button>
+            <button class="ctrl-btn" id="btn-forward" title="Step Forward">⏭️</button>
+            <button class="ctrl-btn" id="btn-reset" title="Reset">🔄</button>
+          </div>
+          <div class="custom-input-bar">
+            <input type="text" id="custom-input-val" placeholder="Custom Array e.g. 2,7,11,15">
+            <button class="btn" id="btn-run-custom">Run Input</button>
+          </div>
+          <div class="speed-control">
+            <span>Speed:</span>
+            <input type="range" id="speed-slider" min="500" max="2200" value="1000">
+          </div>
+        </div>
+        <div class="canvas-area">
+          <div class="step-explanation-banner" id="step-banner">
+            Step 1: Initializing visualizer studio...
+          </div>
+          <div id="canvas-container" style="display:flex; flex-direction:column; align-items:center; width:100%;">
+            <!-- Dynamically rendered visual elements (3D Arrays, Linked List Chains, SVG Trees, 2D Grids, DP Tables) -->
+          </div>
+        </div>
+      </section>
+
+      <!-- Code & Complexity Grid -->
+      <section class="code-complexity-grid">
+        <div class="code-card">
+          <div class="card-title">
+            <span>Swift 6 Solution Implementation</span>
+          </div>
+          <pre><code id="swift-code">// Swift code loads dynamically here</code></pre>
+        </div>
+        <div class="complexity-card">
+          <div class="card-title">Complexity Analysis</div>
+          <div class="metric-box">
+            <div class="metric-label">Time Complexity</div>
+            <div class="metric-val" id="time-complexity">O(N)</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-label">Space Complexity</div>
+            <div class="metric-val" id="space-complexity">O(N)</div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

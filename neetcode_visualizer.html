@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NeetCode 150 — Interactive Visualizer Studio</title>
+  <link rel="stylesheet" href="neetcode_style.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="brand">
+      <div class="brand-logo">🚀</div>
+      <div class="brand-title">NeetCode 150 Visualizer Studio</div>
+    </div>
+    <div class="header-links">
+      <a id="pdf-link" href="file:///Users/viralchauhan/Developer/Antigravity/DSA/NeetCode_150_Swift_Master_Guide.pdf" class="btn" target="_blank">
+        📄 Open PDF Manual
+      </a>
+      <a id="leetcode-link" href="https://leetcode.com/" class="btn btn-primary" target="_blank">
+        🔗 Open LeetCode Problem
+      </a>
+    </div>
+  </header>
+
+  <!-- App Layout -->
+  <div class="app-container">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <input type="text" id="search-input" class="search-box" placeholder="Search NeetCode 150...">
+      </div>
+      <div class="problem-list" id="problem-list">
+        <!-- Dynamically rendered problem items -->
+      </div>
+    </aside>
+
+    <!-- Main Stage -->
+    <main class="main-stage">
+
+      <!-- Problem Header Card -->
+      <section class="problem-header-card">
+        <div>
+          <h1 class="problem-info-title" id="problem-title">Group Anagrams</h1>
+          <div class="problem-meta-tags">
+            <span id="problem-category">Arrays & Hashing • NeetCode 150</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Visualizer Studio -->
+      <section class="visualizer-card">
+        <div class="visualizer-toolbar">
+          <div class="player-controls">
+            <button class="ctrl-btn" id="btn-back" title="Step Back">⏮️</button>
+            <button class="ctrl-btn" id="btn-play" title="Play / Pause">▶️</button>
+            <button class="ctrl-btn" id="btn-forward" title="Step Forward">⏭️</button>
+            <button class="ctrl-btn" id="btn-reset" title="Reset">🔄</button>
+          </div>
+        </div>
+        <div class="canvas-area">
+          <div class="step-banner" id="step-banner">
+            Step 1: Initializing NeetCode 150 Visualizer...
+          </div>
+          <div id="canvas-container" style="display:flex; flex-direction:column; align-items:center; width:100%;">
+            <!-- Dynamically rendered visual elements -->
+          </div>
+        </div>
+      </section>
+
+      <!-- Code & Complexity Grid -->
+      <section class="code-complexity-grid">
+        <div class="code-card">
+          <div class="card-title">Swift 6 Solution</div>
+          <pre><code id="swift-code">// Swift solution loads dynamically here</code></pre>
+        </div>
+        <div class="complexity-card">
+          <div class="card-title">Complexity Analysis</div>
+          <div style="margin-bottom:0.75rem;">
+            <div style="font-size:0.75rem; color:var(--text-muted);">TIME COMPLEXITY</div>
+            <div style="font-size:1.2rem; font-weight:700; color:var(--accent-cyan);" id="time-complexity">O(N)</div>
+          </div>
+          <div>
+            <div style="font-size:0.75rem; color:var(--text-muted);">SPACE COMPLEXITY</div>
+            <div style="font-size:1.2rem; font-weight:700; color:var(--accent-cyan);" id="space-complexity">O(N)</div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="neetcode_app.js"></script>
+</body>
+</html>

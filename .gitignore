@@ -1,0 +1,20 @@
+# macOS files
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Xcode user state
+*.xcuserdata/
+*.xcscmblueprint
+*.xccheckout
+build/
+DerivedData/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# IDE
+.idea/
+.vscode/
