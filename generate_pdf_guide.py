@@ -1118,6 +1118,59 @@ def build_pdf_manual(filename="Swift_7Day_DSA_Preparation_Guide.pdf"):
         }
     ]
 
+    # 📋 Problem Index & Quick Reference Catalog Page
+    story.append(Paragraph("📋 Problem Index & Quick Reference Catalog", styles['SectionHeader']))
+    story.append(HRFlowable(width="100%", thickness=1, color=SECONDARY, spaceBefore=2, spaceAfter=8))
+    
+    idx_styles = ParagraphStyle('IdxText', parent=styles['Normal'], fontName='Helvetica', fontSize=8, leading=10.5, textColor=TEXT_COLOR)
+    idx_header_style = ParagraphStyle('IdxHeader', parent=styles['Normal'], fontName='Helvetica-Bold', fontSize=8.5, leading=11, textColor=colors.HexColor("#FFFFFF"))
+
+    idx_data = [[
+        Paragraph("<b>#</b>", idx_header_style),
+        Paragraph("<b>Problem Title</b>", idx_header_style),
+        Paragraph("<b>Curriculum Module</b>", idx_header_style),
+        Paragraph("<b>Difficulty</b>", idx_header_style)
+    ]]
+
+    prob_seq = 1
+    for day in all_days:
+        day_label = f"{day['day']}: {day['title']}"
+        for p in day["problems"]:
+            raw_title = p["title"]
+            m = re.match(r'^\d+\.\s*(.*?)\s*\((Easy|Medium|Hard)\)$', raw_title)
+            if m:
+                clean_title = m.group(1)
+                diff = m.group(2)
+            else:
+                clean_title = raw_title
+                diff = "Medium"
+                
+            url = p.get("url", "#")
+            diff_color = "#16A34A" if diff == "Easy" else ("#D97706" if diff == "Medium" else "#DC2626")
+            title_p = Paragraph(f"<a href=\"{url}\"><font color=\"#2563EB\"><b>{esc(clean_title)}</b></font></a>", idx_styles)
+            diff_p = Paragraph(f"<font color=\"{diff_color}\"><b>{esc(diff)}</b></font>", idx_styles)
+            idx_data.append([
+                Paragraph(f"<b>#{prob_seq}</b>", idx_styles),
+                title_p,
+                Paragraph(esc(day_label), idx_styles),
+                diff_p
+            ])
+            prob_seq += 1
+
+    t_idx = Table(idx_data, colWidths=[28, 216, 190, 70], repeatRows=1)
+    t_idx_style = [
+        ('BACKGROUND', (0,0), (-1,0), PRIMARY),
+        ('PADDING', (0,0), (-1,-1), 4),
+        ('VALIGN', (0,0), (-1,-1), 'MIDDLE'),
+        ('GRID', (0,0), (-1,-1), 0.5, colors.HexColor("#CBD5E1"))
+    ]
+    for i in range(1, len(idx_data)):
+        if i % 2 == 0:
+            t_idx_style.append(('BACKGROUND', (0, i), (-1, i), BG_LIGHT))
+    t_idx.setStyle(TableStyle(t_idx_style))
+    story.append(t_idx)
+    story.append(PageBreak())
+
     for d in all_days:
         story.append(Paragraph(esc(f"{d['day']}: {d['title']}"), styles['SectionHeader']))
         story.append(HRFlowable(width="100%", thickness=1, color=SECONDARY, spaceBefore=2, spaceAfter=8))
