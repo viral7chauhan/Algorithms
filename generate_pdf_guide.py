@@ -1118,7 +1118,40 @@ def build_pdf_manual(filename="Swift_7Day_DSA_Preparation_Guide.pdf"):
         }
     ]
 
-    # 📋 Problem Index & Quick Reference Catalog Page
+    # 1. Flatten all problems into a single list with extracted difficulty info
+    diff_order = {"Easy": 0, "Medium": 1, "Hard": 2}
+    flat_problems = []
+    
+    for day in all_days:
+        day_label = f"{day['day']}: {day['title']}"
+        for p in day["problems"]:
+            raw_title = p["title"]
+            m = re.match(r'^\d+\.\s*(.*?)\s*\((Easy|Medium|Hard)\)$', raw_title)
+            if m:
+                clean_title = m.group(1)
+                diff = m.group(2)
+            else:
+                clean_title = raw_title
+                diff = "Medium"
+            flat_problems.append({
+                "clean_title": clean_title,
+                "diff": diff,
+                "module": day_label,
+                "url": p.get("url", "#"),
+                "logic": p.get("logic", ""),
+                "code": p.get("code", ""),
+                "time": p.get("time", ""),
+                "space": p.get("space", "")
+            })
+
+    # Sort problems by Easy -> Medium -> Hard
+    flat_problems.sort(key=lambda item: diff_order.get(item["diff"], 99))
+    
+    # Re-assign sequential IDs #1 to #40
+    for idx, p in enumerate(flat_problems, 1):
+        p["seq"] = idx
+
+    # 📋 Problem Index & Quick Reference Catalog Page (Easy -> Hard)
     story.append(Paragraph("📋 Problem Index & Quick Reference Catalog", styles['SectionHeader']))
     story.append(HRFlowable(width="100%", thickness=1, color=SECONDARY, spaceBefore=2, spaceAfter=8))
     
@@ -1132,30 +1165,16 @@ def build_pdf_manual(filename="Swift_7Day_DSA_Preparation_Guide.pdf"):
         Paragraph("<b>Difficulty</b>", idx_header_style)
     ]]
 
-    prob_seq = 1
-    for day in all_days:
-        day_label = f"{day['day']}: {day['title']}"
-        for p in day["problems"]:
-            raw_title = p["title"]
-            m = re.match(r'^\d+\.\s*(.*?)\s*\((Easy|Medium|Hard)\)$', raw_title)
-            if m:
-                clean_title = m.group(1)
-                diff = m.group(2)
-            else:
-                clean_title = raw_title
-                diff = "Medium"
-                
-            url = p.get("url", "#")
-            diff_color = "#16A34A" if diff == "Easy" else ("#D97706" if diff == "Medium" else "#DC2626")
-            title_p = Paragraph(f"<a href=\"{url}\"><font color=\"#2563EB\"><b>{esc(clean_title)}</b></font></a>", idx_styles)
-            diff_p = Paragraph(f"<font color=\"{diff_color}\"><b>{esc(diff)}</b></font>", idx_styles)
-            idx_data.append([
-                Paragraph(f"<b>#{prob_seq}</b>", idx_styles),
-                title_p,
-                Paragraph(esc(day_label), idx_styles),
-                diff_p
-            ])
-            prob_seq += 1
+    for p in flat_problems:
+        diff_color = "#16A34A" if p["diff"] == "Easy" else ("#D97706" if p["diff"] == "Medium" else "#DC2626")
+        title_p = Paragraph(f"<a href=\"{p['url']}\"><font color=\"#2563EB\"><b>{esc(p['clean_title'])}</b></font></a>", idx_styles)
+        diff_p = Paragraph(f"<font color=\"{diff_color}\"><b>{esc(p['diff'])}</b></font>", idx_styles)
+        idx_data.append([
+            Paragraph(f"<b>#{p['seq']}</b>", idx_styles),
+            title_p,
+            Paragraph(esc(p["module"]), idx_styles),
+            diff_p
+        ])
 
     t_idx = Table(idx_data, colWidths=[28, 216, 190, 70], repeatRows=1)
     t_idx_style = [
@@ -1171,34 +1190,51 @@ def build_pdf_manual(filename="Swift_7Day_DSA_Preparation_Guide.pdf"):
     story.append(t_idx)
     story.append(PageBreak())
 
-    for d in all_days:
-        story.append(Paragraph(esc(f"{d['day']}: {d['title']}"), styles['SectionHeader']))
-        story.append(HRFlowable(width="100%", thickness=1, color=SECONDARY, spaceBefore=2, spaceAfter=8))
+    # Render Problem Detail Sections Grouped by Difficulty Tier
+    current_diff = ""
+    current_module = ""
+    for p in flat_problems:
+        diff = p["diff"]
+        module = p["module"]
         
-        for p in d['problems']:
-            p_elem = []
-            title_html = f"<b>{esc(p['title'])}</b> &nbsp;&nbsp;&nbsp; <a href=\"{p['url']}\"><font color=\"#2563EB\"><u>[🔗 Open LeetCode Problem]</u></font></a>"
-            p_elem.append(Paragraph(title_html, styles['ProblemHeader']))
-            p_elem.append(Paragraph(f"<b>Logic &amp; Intuition:</b> {esc(p['logic'])}", styles['LogicText']))
-            
-            highlighted_code = highlight_swift(p['code'])
-            p_elem.append(Paragraph(highlighted_code, styles['SwiftCodeBox']))
-            
-            comp_table = Table([[
-                Paragraph(f"<b>Time Complexity:</b> {esc(p['time'])}", styles['BodyText']),
-                Paragraph(f"<b>Space Complexity:</b> {esc(p['space'])}", styles['BodyText'])
-            ]], colWidths=[250, 254])
-            comp_table.setStyle(TableStyle([
-                ('BACKGROUND', (0,0), (-1,-1), colors.HexColor("#F1F5F9")),
-                ('PADDING', (0,0), (-1,-1), 4),
-                ('BOX', (0,0), (-1,-1), 0.5, colors.HexColor("#CBD5E1"))
-            ]))
-            p_elem.append(comp_table)
-            p_elem.append(Spacer(1, 8))
-            
-            story.append(KeepTogether(p_elem))
-            
-        story.append(PageBreak())
+        # Difficulty Tier Section Header
+        if diff != current_diff:
+            current_diff = diff
+            current_module = ""
+            diff_icon = "🟢" if diff == "Easy" else ("🟡" if diff == "Medium" else "🔴")
+            diff_banner = f"{diff_icon} {diff.upper()} LEVEL PROBLEMS"
+            story.append(Spacer(1, 10))
+            story.append(Paragraph(diff_banner, styles['SectionHeader']))
+            story.append(HRFlowable(width="100%", thickness=1.5, color=PRIMARY, spaceBefore=2, spaceAfter=8))
+
+        # Curriculum Module Sub-header
+        if module != current_module:
+            current_module = module
+            story.append(Paragraph(f"• {esc(module)}", ParagraphStyle('SubModuleHeader', parent=styles['Normal'], fontName='Helvetica-Bold', fontSize=11, leading=14, textColor=SECONDARY, spaceBefore=8, spaceAfter=4, keepWithNext=True)))
+
+        p_elem = []
+        title_html = f"<b>#{p['seq']}. {esc(p['clean_title'])} ({esc(p['diff'])})</b> &nbsp;&nbsp;&nbsp; <a href=\"{p['url']}\"><font color=\"#2563EB\"><u>[🔗 Open LeetCode Problem]</u></font></a>"
+        p_elem.append(Paragraph(title_html, styles['ProblemHeader']))
+        p_elem.append(Paragraph(f"<b>Logic &amp; Intuition:</b> {esc(p['logic'])}", styles['LogicText']))
+        
+        highlighted_code = highlight_swift(p['code'])
+        p_elem.append(Paragraph(highlighted_code, styles['SwiftCodeBox']))
+        
+        comp_table = Table([[
+            Paragraph(f"<b>Time Complexity:</b> {esc(p['time'])}", styles['BodyText']),
+            Paragraph(f"<b>Space Complexity:</b> {esc(p['space'])}", styles['BodyText'])
+        ]], colWidths=[250, 254])
+        comp_table.setStyle(TableStyle([
+            ('BACKGROUND', (0,0), (-1,-1), colors.HexColor("#F1F5F9")),
+            ('PADDING', (0,0), (-1,-1), 4),
+            ('BOX', (0,0), (-1,-1), 0.5, colors.HexColor("#CBD5E1"))
+        ]))
+        p_elem.append(comp_table)
+        p_elem.append(Spacer(1, 8))
+        
+        story.append(KeepTogether(p_elem))
+
+    story.append(PageBreak())
 
     # ==================== DAY 7: MOCK INTERVIEW & CHEAT SHEET ====================
     story.append(Paragraph("Day 7: Mock Interview &amp; Final Revision Guide", styles['SectionHeader']))
