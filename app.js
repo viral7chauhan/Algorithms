@@ -10,7 +10,7 @@ const problemsData = [
     category: "Arrays & Hashing",
     type: "array-map",
     playgroundPage: "file:///Users/viralchauhan/Developer/Antigravity/DSA/WBD_7Day_DSAPrep.playground/Pages/Day1_ArraysAndHashing.xcplaygroundpage/Contents.swift",
-    pdfLink: "file:///Users/viralchauhan/Developer/Antigravity/DSA/WarnerBrosDiscovery_7Day_DSA_Preparation_Guide.pdf",
+    pdfLink: "file:///Users/viralchauhan/Developer/Antigravity/DSA/Swift_7Day_DSA_Preparation_Guide.pdf",
     timeComplexity: "O(N)",
     spaceComplexity: "O(N)",
     code: `class TwoSum {

@@ -101,20 +101,20 @@ class NumberedCanvas(canvas.Canvas):
         self.setFillColor(colors.HexColor("#475569"))
         
         # Header
-        self.drawString(54, 750, "WARNER BROS. DISCOVERY — 7-DAY DSA MASTER MANUAL")
+        self.drawString(54, 750, "7-DAY DSA SWIFT MASTER REFERENCE MANUAL")
         self.setStrokeColor(colors.HexColor("#CBD5E1"))
         self.setLineWidth(0.75)
         self.line(54, 742, 558, 742)
         
         # Footer
         self.setFont("Helvetica", 8)
-        self.drawString(54, 36, "Swift 6 | All 40 Solved Problems | Warner Bros. Discovery Prep")
+        self.drawString(54, 36, "Swift 6 | All 40 Solved Problems | 7-Day DSA Prep Guide")
         page_str = f"Page {self._pageNumber} of {page_count}"
         self.drawRightString(558, 36, page_str)
         self.line(54, 48, 558, 48)
         self.restoreState()
 
-def build_pdf_manual(filename="WarnerBrosDiscovery_7Day_DSA_Preparation_Guide.pdf"):
+def build_pdf_manual(filename="Swift_7Day_DSA_Preparation_Guide.pdf"):
     doc = SimpleDocTemplate(
         filename,
         pagesize=letter,
@@ -209,15 +209,15 @@ def build_pdf_manual(filename="WarnerBrosDiscovery_7Day_DSA_Preparation_Guide.pd
 
     # ==================== COVER PAGE ====================
     story.append(Spacer(1, 30))
-    story.append(Paragraph("WARNER BROS. DISCOVERY", ParagraphStyle('WBDTag', fontName='Helvetica-Bold', fontSize=12, textColor=ACCENT, spaceAfter=6)))
+    story.append(Paragraph("SWIFT 6 INTERVIEW PREPARATION", ParagraphStyle('WBDTag', fontName='Helvetica-Bold', fontSize=12, textColor=ACCENT, spaceAfter=6)))
     story.append(Paragraph("Software Engineering Interview<br/>7-Day DSA Complete Reference Manual", styles['CoverTitle']))
-    story.append(Paragraph("40 Solved LeetCode Problems in Swift 6 with Line-by-Line Logic, Xcode Syntax Highlighting & Clickable Problem URLs", styles['CoverSubtitle']))
+    story.append(Paragraph("40 Solved Coding Problems in Swift 6 with Line-by-Line Logic, Xcode Syntax Highlighting & Clickable Problem URLs", styles['CoverSubtitle']))
     story.append(HRFlowable(width="100%", thickness=2.5, color=PRIMARY, spaceBefore=0, spaceAfter=16))
     
     meta_data = [
-        [Paragraph("<b>Target Role:</b> Software Engineer (iOS / Core Swift)", styles['BodyText']), Paragraph("<b>Curriculum Length:</b> 7 Days", styles['BodyText'])],
+        [Paragraph("<b>Target Role:</b> Software Engineer (iOS / Swift)", styles['BodyText']), Paragraph("<b>Curriculum Length:</b> 7 Days", styles['BodyText'])],
         [Paragraph("<b>Total Solved Programs:</b> 40 Complete Solutions", styles['BodyText']), Paragraph("<b>Language:</b> Swift 6", styles['BodyText'])],
-        [Paragraph("<b>Playground Artifact:</b> WBD_7Day_DSAPrep.playground", styles['BodyText']), Paragraph("<b>LeetCode Links:</b> 100% Clickable URLs Included", styles['BodyText'])]
+        [Paragraph("<b>Playground Artifact:</b> 7Day_DSAPrep.playground", styles['BodyText']), Paragraph("<b>LeetCode Links:</b> 100% Clickable URLs Included", styles['BodyText'])]
     ]
     t_meta = Table(meta_data, colWidths=[250, 254])
     t_meta.setStyle(TableStyle([
